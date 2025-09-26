@@ -17,7 +17,19 @@ router.get("/verify-reset", verifyResetToken);
 router.get("/me", protect, async (req, res) => {
     try {
         console.log("Decoded userId:", req.userId);
-        const user = await prisma.user.findUnique({ where: { id: req.userId } });
+        const user = await prisma.user.findUnique({ 
+            where: { id: req.userId },
+             select: {
+                id: true,
+                name: true,
+                age: true,
+                email: true,
+                provider: true,
+                emailVerified: true,
+                createdAt: true,    
+                updatedAt: true,
+            }, 
+        });
 
         if (!user) {
         return res.status(404).json({ error: "User not found" });

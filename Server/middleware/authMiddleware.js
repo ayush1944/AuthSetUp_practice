@@ -12,7 +12,7 @@ export const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
-    console.log("Decoded JWT payload:", decoded);
+    // console.log("Decoded JWT payload:", decoded);
 
     if (!user) return res.status(401).json({ error: "Not authorized" });
 

@@ -26,11 +26,11 @@ export const registerController = async (req, res)=>{
 
     // {This will delete the old register user when he try to register againif he is not verified}
     // If unverified and expired, delete old record
-    const oldUser = await prisma.user.findUnique({ where: { email } });
+    // const oldUser = await prisma.user.findUnique({ where: { email } });
 
-    if (oldUser && !oldUser.emailVerified && oldUser.otpExpiresAt < new Date()) {
-      await prisma.user.delete({ where: { email } });
-    }
+    // if (oldUser && !oldUser.emailVerified && oldUser.otpExpiresAt < new Date()) {
+    //   await prisma.user.delete({ where: { email } });
+    // }
 
     // hashedPassword
     const hashedPassword = await bcrypt.hash(password, 10)
