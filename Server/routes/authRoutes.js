@@ -1,6 +1,6 @@
 import express from "express"; 
 const router = express.Router();
-import { forgotPassword, loginController, logoutController, registerController, resendOtp, resetPassword, verifyOtp, verifyResetToken } from "../controllers/authControllers.js";
+import { forgotPassword, loginController, logoutController, registerController, resendOtp, resetPassword, updateUser, verifyOtp, verifyResetToken } from "../controllers/authControllers.js";
 import { protect } from "../middleware/authMiddleware.js";
 import prisma from "../lib/db.js";
 import { forgotPasswordLimiter } from "../middleware/rateLimit.js";
@@ -13,6 +13,7 @@ router.post("/logout", logoutController);
 router.post("/forgot-password", forgotPasswordLimiter, forgotPassword);
 router.post("/reset-password", resetPassword);
 router.get("/verify-reset", verifyResetToken);
+router.post("/update-user", protect, updateUser)
 
 router.get("/me", protect, async (req, res) => {
     try {

@@ -44,7 +44,7 @@ model Account {
 model AuditLog {
   id        String   @id @default(uuid())
   userEmail String
-  action    String   // "FORGOT_PASSWORD", "RESET_SUCCESS", "RESET_FAIL"
+  action    String // "FORGOT_PASSWORD", "RESET_SUCCESS", "RESET_FAIL"
   ip        String?
   createdAt DateTime @default(now())
 }

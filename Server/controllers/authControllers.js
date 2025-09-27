@@ -78,7 +78,19 @@ export const verifyOtp = async(req, res ) => {
       data: { emailVerified: true, otp: null, otpExpiresAt: null },
     });
 
-    res.json({ message: " Email verified successfully" });
+    // res.json({ message: " Email verified successfully" });
+
+
+    const token = generateToken( user.id, user.tokenVersion );
+
+    setTokenCookie(res, token);
+
+    return res.json({
+      success: true,
+      error: false,
+      message: "Registered with verified email",
+      user: { id: user.id, email: user.email, name: user.name },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
@@ -363,5 +375,23 @@ export const resetPassword = async(req, res) => {
   } catch (err) {
     console.error("Error in resetPassword:", err);
     return res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { name, age } = req.body;
+    const userId = req.userId;
+    console.log(userId,"This is the user id");
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { name, age }
+    });
+
+    res.json({ message: "Profile updated", user: updatedUser });
+  } catch (err) {
+    console.error("Update user error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 };
