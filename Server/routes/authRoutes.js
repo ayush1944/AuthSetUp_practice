@@ -17,7 +17,7 @@ router.post("/update-user", protect, updateUser)
 
 router.get("/me", protect, async (req, res) => {
     try {
-        console.log("Decoded userId:", req.userId);
+        // console.log("Decoded userId:", req.userId);
         const user = await prisma.user.findUnique({ 
             where: { id: req.userId },
              select: {

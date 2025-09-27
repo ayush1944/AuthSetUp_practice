@@ -12,7 +12,7 @@ cron.schedule("0 * * * *", async () => {
     });
 
     if (result.count > 0) {
-      console.log(`🧹 Cleanup: Deleted ${result.count} unverified users`);
+      // console.log(`🧹 Cleanup: Deleted ${result.count} unverified users`);
     }
   } catch (err) {
     console.error(" Error in cleanup job:", err);

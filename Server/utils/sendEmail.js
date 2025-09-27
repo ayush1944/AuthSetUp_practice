@@ -42,10 +42,10 @@ export const sendEmail = async ({ to, subject, text, html }) => {
 
     const info = await transporter.sendMail(mailOptions);
 
-    console.log(`✅ Email sent to ${to}: ${info.messageId}`);
+    // console.log(`✅ Email sent to ${to}: ${info.messageId}`);
     return info;
   } catch (err) {
-    console.error("❌ Email not sent:", err.message);
+    // console.error("❌ Email not sent:", err.message);
     throw new Error("Email service failed");
   }
 };
