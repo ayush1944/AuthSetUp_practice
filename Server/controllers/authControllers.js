@@ -50,7 +50,31 @@ export const registerController = async (req, res)=>{
         }
     })
 
-    await sendEmail(email, "Verify your email", `Your OTP is: ${otp}`)
+    await sendEmail({
+      to: user.email,
+      subject: "🔐 Verify Your Email - AuthSetup",
+      text: `Your verification code is ${otp}. It will expire in 10 minutes.`,
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+        <h2 style="text-align: center; color: #333;">Welcome to <span style="color:#4F46E5;">AuthSetup</span> 🚀</h2>
+        <p style="font-size: 16px; color: #555;">
+          To complete your registration, please verify your email by entering the One-Time Password (OTP) below:
+        </p>
+        <div style="text-align: center; margin: 20px 0;">
+          <span style="font-size: 28px; font-weight: bold; letter-spacing: 4px; color: #4F46E5; padding: 12px 24px; border: 2px dashed #4F46E5; border-radius: 8px; display: inline-block;">
+            ${otp}
+          </span>
+        </div>
+        <p style="font-size: 14px; color: #777;">
+          ⚠️ This code will expire in <strong>10 minutes</strong>. If you didn’t request this, please ignore this email.
+        </p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+        <p style="font-size: 12px; color: #999; text-align: center;">
+          This is an automated message from AuthSetup. Please do not reply directly to this email.
+        </p>
+      </div>
+      `,
+    });
 
     res.status(201).json({ message: "User registered. Please verify OTP." });
    }  catch (err) {
@@ -129,7 +153,33 @@ export const resendOtp = async (req, res) => {
       data: { otp, otpExpiresAt, lastOtpSentAt: now },
     });
 
-    await sendEmail(email, "Resend OTP", `Your new OTP is: ${otp}`);
+    await sendEmail({
+      to: user.email,
+      subject: "Your New OTP Code - AuthSetup",
+      text: `Here is your new verification code: ${otp}. It will expire in 10 minutes.`,
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+        <h2 style="text-align: center; color: #333;">Resend Verification Code</h2>
+        <p style="font-size: 16px; color: #555;">
+          You requested a new One-Time Password (OTP) for your <strong>AuthSetup</strong> account.
+          Use the code below to verify your email:
+        </p>
+        <div style="text-align: center; margin: 20px 0;">
+          <span style="font-size: 28px; font-weight: bold; letter-spacing: 4px; color: #4F46E5; padding: 12px 24px; border: 2px dashed #4F46E5; border-radius: 8px; display: inline-block;">
+            ${otp}
+          </span>
+        </div>
+        <p style="font-size: 14px; color: #777;">
+           This code will expire in <strong>10 minutes</strong>. If you didn’t request this, please ignore this email.
+        </p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+        <p style="font-size: 12px; color: #999; text-align: center;">
+          This is an automated email from AuthSetup. Please do not reply.
+        </p>
+      </div>
+      `,
+    });
+
 
     res.json({ message: "New OTP sent to your email" });
   } catch (err) {
@@ -251,17 +301,43 @@ export const forgotPassword = async (req, res)=>{
     // Construct reset URL
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
-    // Prepare email body (short, actionable)
-    const emailText = `You requested a password reset. Click the link to reset your password (valid for 1 hour):
-    ${resetUrl} If you didn't request this, please ignore this email.`;
+    // // Prepare email body (short, actionable)
+    // const emailText = `You requested a password reset. Click the link to reset your password (valid for 1 hour):
+    // ${resetUrl} If you didn't request this, please ignore this email.`;
 
     try {
-      await sendEmail( email, "Reset your password", emailText);
+      await sendEmail({
+        to: user.email,
+        subject: "Reset Your Password - AuthSetup",
+        text: `You requested to reset your password. Click the link below (valid for 1 hour): ${resetUrl}`,
+        html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
+          <h2 style="text-align: center; color: #333;">Reset Your Password</h2>
+          <p style="font-size: 16px; color: #555;">
+            We received a request to reset your password for your <strong>AuthSetup</strong> account.
+            Click the button below to reset your password:
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" style="background:#4F46E5; color:#fff; text-decoration:none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 6px; display: inline-block;">
+              Reset Password
+            </a>
+          </div>
+          <p style="font-size: 14px; color: #777;">
+            This link will expire in <strong>1 hour</strong>. If you didn’t request this, you can safely ignore this email.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+          <p style="font-size: 12px; color: #999; text-align: center;">
+            This is an automated email from AuthSetup. Please do not reply.
+          </p>
+        </div>
+        `,
+      });
+
     } catch (mailErr) {
       // If email sending fails, clear token so it can't be used
       await prisma.user.update({
         where : { email },
-        data: { 
+        data: {   
           resetToken: null, 
           resetExpiresAt: null, 
           lastPasswordResetSentAt: null
@@ -382,8 +458,6 @@ export const updateUser = async (req, res) => {
   try {
     const { name, age } = req.body;
     const userId = req.userId;
-    console.log(userId,"This is the user id");
-
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { name, age }
