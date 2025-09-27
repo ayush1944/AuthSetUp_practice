@@ -5,7 +5,7 @@ import {generateToken} from '../utils/jwt.js'
 import { setTokenCookie } from "../utils/setTokenCookie.js";
 import { createPasswordResetToken, hashToken } from '../utils/tokenUtils.js';
 
-//Register User 
+
 export const registerController = async (req, res)=>{
    try {
      const { name, age, email, password } = req?.body;
