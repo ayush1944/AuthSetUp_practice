@@ -41,12 +41,12 @@ export const registerController = async (req, res)=>{
 
     const user = await prisma.user.create({
         data: {
-            email, 
+            email: ""+email.toLowerCase(), 
             password: hashedPassword, 
-            name, 
-            age,
-            otp,
-            otpExpiresAt
+            name: ""+name.toLowerCase(), 
+            age: Number(age),
+            otp: otp,
+            otpExpiresAt: otpExpiresAt
         }
     })
 

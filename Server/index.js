@@ -11,7 +11,9 @@ const PORT = process.env.PORT || 8000;
 
 
 //middleware 
-app.use(cors()) // to allow cross-origin requests
+app.use(cors(
+    { origin: 'http://localhost:5173', credentials: true }
+)) // to allow cross-origin requests
 app.use(express.json()); // for parsing JSON
 app.use(cookieParser()) // for reading cookies
 
