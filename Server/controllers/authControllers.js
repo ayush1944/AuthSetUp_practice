@@ -470,3 +470,29 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+export const changePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.userId } });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Check old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ error: "Old password is incorrect" });
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: { id: req.userId },
+      data: { password: hashedPassword },
+    });
+
+    res.json({ message: "Password changed successfully" });
+  } catch (err) {
+    console.error("Error in changePassword:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
