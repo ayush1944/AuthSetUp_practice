@@ -22,7 +22,9 @@ export default function Navbar() {
       <header className="text-white bg-gray-900 p-4 flex justify-between items-center shadow-lg rounded-t-lg">
         {/* Left side: App name */}
         <Link to="/" className="text-2xl font-bold">
-          MyApp
+          <div className="flex items-center bg-slate-500 shadow rounded-lg px-3 py-1 ">
+            <span className="text-white">My</span> <span className="text-green-400">App</span>
+          </div>
         </Link>
 
         {/* Right side: Nav actions */}
