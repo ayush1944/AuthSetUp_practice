@@ -1,28 +1,28 @@
-import axios from "../api/axios.js";
+// import axios from "../api/axios.js";
 import { useAuth } from "../Context/useAuth";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
+import React from "react";
+// import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const handleLogout = async () => {
-    setLoading(true);
-    await axios.post("/logout")
-    toast.success("Logged out successfully!", { duration: 4000 });
-    setTimeout(() => {
-      window.location.replace("/");
-    }, 2000);
-    setLoading(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("pendingEmail");
-  }
+  // const handleLogout = async () => {
+  //   setLoading(true);
+  //   await axios.post("/logout")
+  //   toast.success("Logged out successfully!", { duration: 4000 });
+  //   setTimeout(() => {
+  //     window.location.replace("/");
+  //   }, 2000);
+  //   setLoading(false);
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("email");
+  //   localStorage.removeItem("pendingEmail");
+  // }
 
   return (
     <div className="absolute inset-0 flex flex-col   bg-gradient-to-b from-gray-900 to-gray-800">
-      {/* Header */}
+      {/* Header
       <header className="text-white bg-gray-900 p-4 flex justify-between items-center shadow-lg rounded-t-lg">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <button
@@ -32,7 +32,7 @@ export default function Dashboard() {
           { loading ? "Logging out..." : "Logout" }
         </button>
       </header>
-        <span className="bg-slate-500 h-[1px] w-full"></span>
+        <span className="bg-slate-500 h-[1px] w-full"></span> */}
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col text-white items-center justify-center text-center px-4">

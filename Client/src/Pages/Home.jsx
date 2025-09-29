@@ -3,7 +3,7 @@ import { useAuth } from "../Context/useAuth";
 import React from "react";
 
 export default function Home() {
-  
+
   const { user } = useAuth();
 
   return (

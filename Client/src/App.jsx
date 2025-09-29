@@ -13,12 +13,14 @@ import ProtectedRoute from "./Components/ProtectedRoutes";
 import Success from "./Auth-Pages/Success";
 import PublicRoute from "./Components/PublicRoute";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./Components/Navbar";
 
 function App() {
   // const location = useLocation();
 
   return (
     <div className="h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col">
+      <Navbar/>
       <div className="flex-grow flex items-center justify-center relative px-6">
         <Routes>
           {/* Public Routes */}
@@ -50,8 +52,10 @@ function App() {
         </Routes>
       </div>
 
+      <Footer />
+
       <Toaster
-        position="top-right"
+        position="bottom-right"
         reverseOrder={false}
         toastOptions={{
           success: {
