@@ -2,6 +2,7 @@ import axios from "../api/axios.js";
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function VerifyOTP() {
   const [form, setForm] = useState({ email: "", otp: "" });
@@ -19,6 +20,9 @@ export default function VerifyOTP() {
       email: form.email || storedEmail,
       otp: form.otp,
     });
+    toast.success("OTP verified successfully!", { duration: 4000 });
+    localStorage.removeItem("pendingEmail");
+    localStorage.removeItem("email");
     navigate("/dashboard");
     setLoading(false);
   };
@@ -26,7 +30,9 @@ export default function VerifyOTP() {
   const handleResendOTP = async () => {
     try {
       await axios.post("/resend-otp", { email: storedEmail || form.email });
+      toast.success("OTP resent successfully!", { duration: 4000 });
     } catch (error) {
+      toast.error("Failed to resend OTP.", { duration: 4000 });
       console.error("Error resending OTP:", error);
     }
   };

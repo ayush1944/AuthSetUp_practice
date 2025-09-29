@@ -1,6 +1,7 @@
 import axios from "../api/axios.js";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -11,9 +12,16 @@ export default function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await axios.post("/forgot-password", { email });
-    setLoading(false);
-    Navigate('/success')
+    try {
+      await axios.post("/forgot-password", { email });
+      toast.success("If email exists, forgot password email sent!", { duration: 4000 });
+      Navigate('/success');
+    } catch (error) {
+      console.log("Forgot password error:", error);
+      toast.error("Failed to send forgot password email.", { duration: 4000 });
+    } finally {
+      setLoading(false);
+    }
     console.log("Forgot password requested for:", email);
   };
 

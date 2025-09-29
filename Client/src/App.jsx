@@ -12,6 +12,7 @@ import Profile from "./Pages/Profile";
 import ProtectedRoute from "./Components/ProtectedRoutes";
 import Success from "./Auth-Pages/Success";
 import PublicRoute from "./Components/PublicRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   // const location = useLocation();
@@ -49,8 +50,18 @@ function App() {
         </Routes>
       </div>
 
-      {/* Footer always visible */}
-      <Footer />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          success: {
+            style: { background: "#4ade80", color: "#fff" }, // green
+          },
+          error: {
+            style: { background: "#ef4444", color: "#fff" }, // red
+          },
+        }}
+      />
     </div>
   );
 }

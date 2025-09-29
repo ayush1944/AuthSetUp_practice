@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
 import { useAuth } from "../Context/useAuth";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     setLoading(true);
     await axios.post("/logout")
-    navigate("/");
+    toast.success("Logged out successfully!", { duration: 4000 });
+    setTimeout(() => {
+      window.location.replace("/");
+    }, 2000);
     setLoading(false);
     localStorage.removeItem("token");
     localStorage.removeItem("email");

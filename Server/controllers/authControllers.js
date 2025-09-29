@@ -399,6 +399,7 @@ export const verifyResetToken = async(req, res) =>{
 
 export const resetPassword = async(req, res) => {
   const { token , email, password} = req.body;
+  
   if(!token || !email || !password) return res.status(400).json({ error: "Invalid request" });
 
   try {

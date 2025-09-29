@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -24,23 +26,23 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
     if (form.age <= 0) {
-      alert("Please enter a valid age!");
+      toast.error("Please enter a valid age!");
       return;
     }
     if (form.email === "") {
-      alert("Please enter a valid email!");
+      toast.error("Please enter a valid email!");
       return;
     }
     if (form.name === "") {
-      alert("Please enter your name!");
+      toast.error("Please enter your name!");
       return;
     }
     if (form.password.length < 6) {
-      alert("Password should be at least 6 characters long!");
+      toast.error("Password should be at least 6 characters long!");
       return;
     }
     setLoading(true);
@@ -52,19 +54,17 @@ export default function Register() {
         password: form.password,
       });
       setLoading(false);
+      toast.success("Registration successful! Please verify your email.");
       navigate("/verify-otp");
       
     } catch (error) {
       setLoading(false);
-      console.error("Registration error:", error);
       if (
         error.response &&
         error.response.data &&
         error.response.data.message
       ) {
-        alert(`Registration failed: ${error.response.data.message}`);
-      } else {
-        alert("Registration failed. Please try again.");
+        toast.error(`Registration failed: ${error.response.data.message}`);
       }
     }
   };
@@ -113,7 +113,7 @@ export default function Register() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-3 text-gray-400 hover:text-white"
             >
-              {showPassword ? "👁️" : "🙈"}
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>
           </div>
 
@@ -131,7 +131,7 @@ export default function Register() {
               onClick={() => setShowConfirm(!showConfirm)}
               className="absolute inset-y-0 right-3 text-gray-400 hover:text-white"
             >
-              {showConfirm ? "👁️" : "🙈"}
+              {showConfirm ? <FaEye /> : <FaEyeSlash />}
             </button>
           </div>
 

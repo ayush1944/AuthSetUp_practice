@@ -1,12 +1,13 @@
 import axios from "../api/axios.js";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,20 +16,29 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     if(form.email === "" || form.password === "") {
+      toast.error("Email and Password are required.");
       setLoading(false);
       return;
     }
     if(form.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
       setLoading(false);
       return;
     }
     
     try {
-      const response = await axios.post('/login', form);
-      navigate("/");
-      console.log("Login successful", response.data);
+      await axios.post('/login', form);
+      toast.success("Login successful!", { duration: 4000 });
+      setTimeout(() => {
+        window.location.replace("/");
+      }, 2000);
     } catch (error) {
-      console.error("Login failed", error);
+      console.log("Login error:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`Login failed: ${error.response.data.message}`, { duration: 4000 });
+      } else {
+        toast.error("Login failed. Please try again.", { duration: 4000 });
+      }
     } finally {
       setLoading(false);
     }
@@ -64,7 +74,7 @@ export default function Login() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-3 text-gray-400 hover:text-white"
             >
-              {showPassword ? "👁️" : "🙈"}
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>
           </div>
 

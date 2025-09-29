@@ -3,10 +3,10 @@ import { useAuth } from "../Context/useAuth";
 import React from "react";
 
 export default function Home() {
+  
   const { user } = useAuth();
 
   return (
-    // <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-gray-100 to-gray-200">
       <div className="absolute inset-0 flex items-center justify-center  bg-gradient-to-b from-gray-900 to-gray-800">
       {/* Main content */}
       <main className="flex-grow flex flex-col items-center justify-center text-center px-4">

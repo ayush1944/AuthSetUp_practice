@@ -1,12 +1,14 @@
 import axios from "..//api/axios.js";
 import React, { useState } from "react";
-import { useSearchParams, Navigate } from "react-router-dom";
+import { useSearchParams, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function ResetPassword() {
-  const [form, setForm] = useState({ password: "", confirmPassword: "" });
+  const [form, setForm] = useState({ password: "", confirmPassword: ""});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [params] = useSearchParams();
   const token = params.get("token");
@@ -20,12 +22,15 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match!", { duration: 4000 });
       console.error("Passwords do not match!");
       return;
     }
     setLoading(true);
-    await axios.post("/reset-password", form);
+    await axios.post("/reset-password", { token, email, password: form.password });
+    toast.success("Password reset successful! Please log in.", { duration: 4000 });
     setLoading(false);
+    navigate("/login");
     console.log("Resetting password:", form.password);
   };
 
