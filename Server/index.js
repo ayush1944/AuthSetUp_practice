@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
-import router from './routes/authRoutes.js';
+import authRoute from './routes/authRoutes.js';
 import cors from "cors"
 import cookieParser from 'cookie-parser';
+import googleRouter from './routes/googleRoutes.js';
 
 const app = express();
 
@@ -21,7 +22,8 @@ app.get('/', (req, res)=>{
     res.send("API is running...")
 })  
 
-app.use('/api/auth', router);
+app.use('/api/auth', authRoute);
+app.use('/api/auth', googleRouter);
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`)

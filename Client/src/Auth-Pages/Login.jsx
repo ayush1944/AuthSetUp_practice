@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -15,27 +16,33 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if(form.email === "" || form.password === "") {
+    if (form.email === "" || form.password === "") {
       toast.error("Email and Password are required.");
       setLoading(false);
       return;
     }
-    if(form.password.length < 6) {
+    if (form.password.length < 6) {
       toast.error("Password must be at least 6 characters long.");
       setLoading(false);
       return;
     }
-    
+
     try {
-      await axios.post('/login', form);
+      await axios.post("/login", form);
       toast.success("Login successful!", { duration: 4000 });
       setTimeout(() => {
         window.location.replace("/");
       }, 2000);
     } catch (error) {
       console.log("Login error:", error);
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(`Login failed: ${error.response.data.message}`, { duration: 4000 });
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(`Login failed: ${error.response.data.message}`, {
+          duration: 4000,
+        });
       } else {
         toast.error("Login failed. Please try again.", { duration: 4000 });
       }
@@ -81,11 +88,25 @@ export default function Login() {
           <button
             type="submit"
             className={`w-full bg-blue-500 hover:bg-blue-600 text-white ${
-                loading ? "cursor-not-allowed" : "" 
-                } font-semibold py-3 rounded-lg transition`}
+              loading ? "cursor-not-allowed" : ""
+            } font-semibold py-3 rounded-lg transition`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+          <a
+            href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}
+            className="flex items-center justify-center gap-3 w-full max-w-sm h-12 rounded-md bg-[#4285F4] hover:bg-[#357ae8] transition-colors duration-200 text-white font-medium shadow-md"
+          >
+            {/* Google "G" */}
+            <span className="bg-white p-1 rounded-sm">
+              <FcGoogle className="text-2xl" />
+            </span>
+
+            {/* Button text */}
+            <span className="text-base">
+              Continue with <strong>Google</strong>
+            </span>
+          </a>
         </form>
 
         <div className="flex justify-between items-center mt-4 text-sm">

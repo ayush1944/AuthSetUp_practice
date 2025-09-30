@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -68,6 +69,8 @@ export default function Register() {
       }
     }
   };
+
+
 
   return (
     <div className="absolute inset-0 flex items-center justify-center  bg-gradient-to-b from-gray-900 to-gray-800">
@@ -147,6 +150,20 @@ export default function Register() {
           >
             {loading ? "Loading..." : "Register"}
           </button>
+          <a
+                      href={`${import.meta.env.VITE_BACKEND_URL}/api/auth/google`}
+                      className="flex items-center justify-center gap-3 w-full max-w-sm h-12 rounded-md bg-[#4285F4] hover:bg-[#357ae8] transition-colors duration-200 text-white font-medium shadow-md"
+                    >
+                      {/* Google "G" */}
+                      <span className="bg-white p-1 rounded-sm">
+                        <FcGoogle className="text-2xl" />
+                      </span>
+          
+                      {/* Button text */}
+                      <span className="text-base">
+                        Continue with <strong>Google</strong>
+                      </span>
+                    </a>
         </form>
 
         <p className="text-gray-400 text-sm text-center mt-4">

@@ -49,3 +49,37 @@ export const sendEmail = async ({ to, subject, text, html }) => {
     throw new Error("Email service failed");
   }
 };
+
+export const sendWelcomeEmail = async (to, name) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // you can replace with SMTP or provider
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"MyApp Team" <${process.env.EMAIL_USER}>`,
+      to,
+      subject: "🎉 Welcome to MyApp!",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+          <h2 style="color: #4F46E5;">Hi ${name || "there"},</h2>
+          <p>Welcome to <b>MyApp</b>! 🎉</p>
+          <p>Your account has been created successfully. We’re excited to have you on board.</p>
+          <p>You can now login and start exploring your dashboard.</p>
+          <br/>
+          <p style="font-size: 0.9em; color: #555;">If you did not create this account, please ignore this email.</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    console.log(`Welcome email sent to ${to}`);
+  } catch (err) {
+    console.error("Error sending welcome email:", err);
+  }
+};
