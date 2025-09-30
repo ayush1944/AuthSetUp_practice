@@ -1,47 +1,46 @@
-// import axios from "../api/axios.js";
-import { useAuth } from "../Context/useAuth";
 import React from "react";
+import { useAuth } from "../Context/useAuth";
+// import axios from "../api/axios.js";
 // import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  // const [loading, setLoading] = useState(false);
-
-  // const handleLogout = async () => {
-  //   setLoading(true);
-  //   await axios.post("/logout")
-  //   toast.success("Logged out successfully!", { duration: 4000 });
-  //   setTimeout(() => {
-  //     window.location.replace("/");
-  //   }, 2000);
-  //   setLoading(false);
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("email");
-  //   localStorage.removeItem("pendingEmail");
-  // }
 
   return (
-    <div className="absolute inset-0 flex flex-col   bg-gradient-to-b from-gray-900 to-gray-800">
-      {/* Header
-      <header className="text-white bg-gray-900 p-4 flex justify-between items-center shadow-lg rounded-t-lg">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
-        >
-          { loading ? "Logging out..." : "Logout" }
-        </button>
-      </header>
-        <span className="bg-slate-500 h-[1px] w-full"></span> */}
-
+    <div className="absolute inset-0 flex flex-col bg-gradient-to-b from-gray-900 to-gray-800">
       {/* Main Content */}
-      <main className="flex-grow flex flex-col text-white items-center justify-center text-center px-4">
-        <h2 className="text-3xl font-bold mb-4">
+      <main className="flex flex-grow flex-col items-center justify-center px-6 text-center text-white">
+        <h2 className="mb-4 text-3xl font-bold">
           Hello, {user?.name || user?.email} 👋
         </h2>
-        <p className="mt-2 text-gray-300">
-          Welcome to your personal dashboard. Here you’ll manage your account and settings.
+        <p className="mb-8 max-w-xl text-gray-300">
+          Welcome to your personal dashboard. Here you can manage your account, update
+          settings, and explore new features.
         </p>
+
+        {/* Example Stats */}
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="rounded-xl bg-gray-800 p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-semibold">Account Status</h3>
+            <p className="mt-2 text-gray-400">
+              {user?.emailVerified ? "✅ Verified" : "❌ Not Verified"}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-gray-800 p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-semibold">Provider</h3>
+            <p className="mt-2 text-gray-400">
+              {user?.provider || "credentials"}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-gray-800 p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-semibold">Joined</h3>
+            <p className="mt-2 text-gray-400">
+              {new Date(user?.createdAt).toLocaleDateString() || "N/A"}
+            </p>
+          </div>
+        </div>
       </main>
     </div>
   );

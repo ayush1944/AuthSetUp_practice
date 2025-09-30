@@ -10,6 +10,7 @@ import VerifyOTP from "./Auth-Pages/Verify-OTP";
 import Dashboard from "./Pages/Dashboard";
 import Profile from "./Pages/Profile";
 import ProtectedRoute from "./Components/ProtectedRoutes";
+import Success from "./Auth-Pages/Success";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./Components/Navbar";
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/success" element={<Success />} />
 
           {/* Protected Routes */}
           <Route

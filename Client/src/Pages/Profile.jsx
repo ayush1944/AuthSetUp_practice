@@ -19,6 +19,7 @@ export default function Profile() {
     newPassword: "",
   });
 
+
   // Update profile
   const handleSubmit = async (e) => {
     e.preventDefault();

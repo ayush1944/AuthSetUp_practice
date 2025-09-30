@@ -461,7 +461,7 @@ export const updateUser = async (req, res) => {
     const userId = req.userId;
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { name, age }
+      data: { name, age: Number(age) }
     });
 
     res.json({ message: "Profile updated", user: updatedUser });
