@@ -8,7 +8,7 @@ import googleRouter from './routes/googleRoutes.js';
 
 const app = express();
 
-const PORT = process.env.PORT || 8000;
+const PORT = 3000;
 
 
 //middleware 
